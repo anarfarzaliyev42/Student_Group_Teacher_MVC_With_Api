@@ -1,0 +1,39 @@
+﻿@model StudentGroupMVC.Models.AddTeacherToGroupModel
+
+@{
+    ViewData["Title"] = "AddTeacherToGroup";
+    var groups=ViewBag.Groups;
+    var teachers =ViewBag.Teacher;
+}
+
+    <h1>Add Teacher To Group</h1>
+
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddTeacherToGroup">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <select asp-for="GroupId"
+                    asp-items="@(new SelectList(groups,"Id","Name"))">
+                <option value="0">Please select one</option>
+            </select>
+            <select asp-for="TeacherId"
+                    asp-items="@(new SelectList(teachers,"Id","Name"))">
+                <option value="0">Please select one</option>
+            </select>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
