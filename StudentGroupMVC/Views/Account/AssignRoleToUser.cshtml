@@ -1,0 +1,40 @@
+﻿@model StudentGroupMVC.ViewModels.AssignRoleToUserViewModel
+
+@{
+    ViewData["Title"] = "Add Role To User";
+}
+
+    <h1>Add Role To User</h1>
+
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AssignRoleToUser">
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <select asp-for="UserId"
+                    asp-items="@(new SelectList(Model.Users,"Id","UserName"))">
+                <option value="">Please select one</option>
+            </select>
+            <span asp-validation-for="UserId"></span>
+            <select asp-for="RoleId"
+                    asp-items="@(new SelectList(Model.Roles,"Id","Name"))">
+                <option value="">Please select one</option>
+            </select>
+            <span asp-validation-for="RoleId"></span>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using StudentGroupMVC.Models;
-
+using StudentGroupMVC.ViewModels;
 namespace StudentGroupMVC.Controllers
 {
+    [Area("Admin")]
     public class TeacherController : Controller
     {
         [HttpGet]
@@ -18,7 +19,7 @@ namespace StudentGroupMVC.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult CreateTeacher(CreateTeacherModel createTeacher)
+        public IActionResult CreateTeacher(CreateTeacherViewModel createTeacher)
         {
             using (HttpClient client = new HttpClient())
             {

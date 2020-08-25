@@ -1,9 +1,10 @@
-﻿@model StudentGroupMVC.Models.AddTeacherToGroupModel
+﻿@model StudentGroupMVC.ViewModels.AddTeacherToGroupViewModel
 
 @{
     ViewData["Title"] = "AddTeacherToGroup";
-    var groups=ViewBag.Groups;
-    var teachers =ViewBag.Teacher;
+    var groups=ViewBag.Groups as List<Group>;
+    var teachers =ViewBag.Teachers as List<Teacher>;
+
 }
 
     <h1>Add Teacher To Group</h1>
@@ -13,19 +14,22 @@
 <div class="row">
     <div class="col-md-4">
         <form asp-action="AddTeacherToGroup">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div asp-validation-summary="All" class="text-danger"></div>
 
             <select asp-for="GroupId"
                     asp-items="@(new SelectList(groups,"Id","Name"))">
-                <option value="0">Please select one</option>
+                <option value="">Please select one</option>
             </select>
+            <span asp-validation-for="GroupId"></span>
             <select asp-for="TeacherId"
                     asp-items="@(new SelectList(teachers,"Id","Name"))">
-                <option value="0">Please select one</option>
+                <option value="">Please select one</option>
             </select>
+            <span asp-validation-for="TeacherId"></span>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
+           
         </form>
     </div>
 </div>

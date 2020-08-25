@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace StudentGroupMVC.Models
 {
-    public class GroupViewModel
+    public class StudentGroup
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
+        public Student Student { get; set; }
+        public Group Group { get; set; }
     }
 }

@@ -4,16 +4,17 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using StudentGroupMVC.Models;
-
+using StudentGroupMVC.ViewModels;
 namespace StudentGroupMVC.Controllers
 {
+    [Area("Admin")]
+    [Authorize(Roles ="Admin,Manager")]
     public class GroupController : Controller
     {
-
-
 
         [HttpGet]
         public IActionResult CreateGroup()
@@ -22,7 +23,7 @@ namespace StudentGroupMVC.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult CreateGroup(CreateGroupModel createGroupModel)
+        public IActionResult CreateGroup(CreateGroupViewModel createGroupModel)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -55,33 +56,46 @@ namespace StudentGroupMVC.Controllers
                 var jsonString2 = result2.Content.ReadAsStringAsync().Result;
                 objTeacher = JsonConvert.DeserializeObject<List<Teacher>>(jsonString2);
                 ViewBag.Groups = objGroup;
-                ViewBag.Teacher = objTeacher;
+                ViewBag.Teachers = objTeacher;
             }
 
             return View();
         }
 
         [HttpPost]
-        public IActionResult AddTeacherToGroup(AddTeacherToGroupModel addTeacher)
+        public IActionResult AddTeacherToGroup(AddTeacherToGroupViewModel addTeacher)
         {
-
-            using (HttpClient client = new HttpClient())
+            if (ModelState.IsValid)
             {
-                GroupTeacher groupTeacher = new GroupTeacher()
+                using (HttpClient client = new HttpClient())
                 {
-                    GroupID = addTeacher.GroupId,
-                    TeacherID = addTeacher.TeacherId
-                };
-                var data = JsonConvert.SerializeObject(groupTeacher);
-                var content = new StringContent(data, Encoding.UTF8, "application/json");
-                var url=($"http://localhost:56825/api/Group/AddTeacherToGroup?groupId={groupTeacher.GroupID}&teacherId={groupTeacher.TeacherID}");
-                var resp = client.PostAsync($"{url}", content).Result;
-                if (resp.IsSuccessStatusCode)
-                {
-                    return RedirectToAction("Index", "Home");
+                    GroupTeacher groupTeacher = new GroupTeacher()
+                    {
+                        GroupID = addTeacher.GroupId,
+                        TeacherID = addTeacher.TeacherId
+                    };
+                    var data = JsonConvert.SerializeObject(groupTeacher);
+                    var content = new StringContent(data, Encoding.UTF8, "application/json");
+                    var url = ($"http://localhost:56825/api/Group/AddTeacherToGroup?groupId={groupTeacher.GroupID}&teacherId={groupTeacher.TeacherID}");
+                    var resp = client.PostAsync($"{url}", content).Result;
+                    if (resp.IsSuccessStatusCode)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                    else
+                    {
+                        return RedirectToAction("Error");
+                    }
                 }
             }
+           
+           
             return View(addTeacher);
+        }
+
+        public IActionResult Error()
+        {
+            return View();
         }
     }
 }

@@ -1,0 +1,42 @@
+﻿@model List<StudentGroupMVC.Models.StudentGroup>
+
+@{
+    ViewData["Title"] = "GetAllStudent";
+}
+
+<h1>Students</h1>
+
+<p>
+    <a asp-action="CreateStudent">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Group name</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @item.Student.Name
+            </td>
+            <td>
+                @item.Student.Email
+            </td>
+            <td>
+                @item.Group.Name
+            </td>
+          
+            <td>
+                @Html.ActionLink("Edit", "EditStudent", new { id=item.Student.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Student.Id }) |
+                @Html.ActionLink("Delete", "DeleteStudent", new { id = item.Student.Id })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -30,8 +30,11 @@ namespace StudentGroupMVC
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>()
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddIdentity<IdentityUser,IdentityRole>(options=>
+            {
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+            }).AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddMvc(option => option.EnableEndpointRouting = false);
@@ -57,6 +60,7 @@ namespace StudentGroupMVC
             app.UseRouting();
 
             app.UseAuthentication();
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -70,7 +74,7 @@ namespace StudentGroupMVC
             {
                 routes.MapRoute(
                   name: "areas",
-                  template: "{area:exists}/{controller=News}/{action=Index}/{id?}"
+                  template: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
                 );
             });
         }

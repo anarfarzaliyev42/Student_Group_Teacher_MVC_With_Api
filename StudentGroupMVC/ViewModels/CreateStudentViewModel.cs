@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace StudentGroupMVC.Models
+namespace StudentGroupMVC.ViewModels
 {
-    public class CreateTeacherModel
+    public class CreateStudentViewModel
     {
         public string Name { get; set; }
         public string Email { get; set; }
+        public int GroupId { get; set; }
+        
     }
 }
